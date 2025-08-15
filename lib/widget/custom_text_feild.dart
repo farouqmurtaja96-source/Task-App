@@ -5,11 +5,15 @@ class CustomTextFeild extends StatelessWidget {
     super.key,
     required this.title,
     required this.hint,
-    this.iconButton,
+    this.icon,
+    this.onTap,
+    this.isRead = false,
   });
   final String title;
   final String hint;
-  final IconButton? iconButton;
+  final Widget? icon;
+  final Function()? onTap;
+  final bool isRead;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,8 +24,10 @@ class CustomTextFeild extends StatelessWidget {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         TextFormField(
+          readOnly: isRead,
+          onTap: onTap,
           decoration: InputDecoration(
-            suffixIcon: iconButton,
+            suffixIcon: icon,
             hintText: hint,
             border: OutlineWidget(Colors.grey),
             enabledBorder: OutlineWidget(Colors.grey),
