@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:task_v1/model/task_model.dart';
 import 'package:task_v1/views/home_view.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskModelAdapter());
+  Hive.openBox<TaskModel>('tasks');
   runApp(const TaskApp());
 }
 
