@@ -8,12 +8,18 @@ class CustomTextFeild extends StatelessWidget {
     this.icon,
     this.onTap,
     this.isRead = false,
+
+    this.onSaved,
+    this.controller,
   });
   final String title;
   final String hint;
   final Widget? icon;
   final Function()? onTap;
   final bool isRead;
+
+  final Function(String?)? onSaved;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,6 +30,15 @@ class CustomTextFeild extends StatelessWidget {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         TextFormField(
+          controller: controller,
+          validator: (value) {
+            if (value?.isEmpty ?? true) {
+              return 'filed is required';
+            } else {
+              return null;
+            }
+          },
+          onSaved: onSaved,
           readOnly: isRead,
           onTap: onTap,
           decoration: InputDecoration(
