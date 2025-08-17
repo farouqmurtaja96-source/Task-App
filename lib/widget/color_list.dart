@@ -22,7 +22,7 @@ class _LastSeactionState extends State<ColorList> {
     if (widget.initialColor != null) {
       isActive = colors.indexWhere((c) => c.toARGB32() == widget.initialColor);
       if (isActive == -1) isActive = 0; // لو اللون مش موجود بالقائمة
-      BlocProvider.of<AddTaskCubit>(context).color = colors[isActive!];
+      BlocProvider.of<AddTaskCubit>(context).color = colors[isActive];
     } else {
       isActive = 0;
       BlocProvider.of<AddTaskCubit>(context).color = colors[0];

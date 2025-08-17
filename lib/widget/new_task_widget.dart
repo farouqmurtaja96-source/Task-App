@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
 import 'package:task_v1/model/task_model.dart';
 import 'package:task_v1/views/edit_task.dart';
+import 'package:task_v1/widget/itme_widget.dart';
 
 class NewTaskWidget extends StatelessWidget {
   const NewTaskWidget({super.key});
@@ -70,78 +71,7 @@ class NewTaskWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     color: Color(task[index].color),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10.0,
-                      horizontal: 16,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                task[index].title,
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Icon(Icons.timer, color: Colors.white),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    task[index].satrtTime,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    '-${task[index].endTime}',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                task[index].note,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(width: 1.5, color: Colors.black, height: 60),
-
-                        SizedBox(width: 8),
-
-                        // النص العمودي
-                        RotatedBox(
-                          quarterTurns: 3,
-                          child: Text(
-                            'DONE',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: ItmeWidget(task: task[index]),
                 ),
               ),
             );
