@@ -31,13 +31,7 @@ class CustomTextFeild extends StatelessWidget {
         ),
         TextFormField(
           controller: controller,
-          validator: (value) {
-            if (value?.isEmpty ?? true) {
-              return 'filed is required';
-            } else {
-              return null;
-            }
-          },
+
           onSaved: onSaved,
           readOnly: isRead,
           onTap: onTap,

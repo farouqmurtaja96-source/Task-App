@@ -9,14 +9,41 @@ import 'package:task_v1/widget/custom_button_widget.dart';
 import 'package:task_v1/widget/custom_text_feild.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddTaskView extends StatefulWidget {
-  const AddTaskView({super.key});
-
+class EidtTaskView extends StatefulWidget {
+  const EidtTaskView({super.key, this.task});
+  final TaskModel? task;
   @override
-  State<AddTaskView> createState() => _AddTaskViewState();
+  State<EidtTaskView> createState() => _EidtTaskViewState();
 }
 
-class _AddTaskViewState extends State<AddTaskView> {
+class _EidtTaskViewState extends State<EidtTaskView> {
+  TextEditingController? titleController;
+  TextEditingController? noteController;
+  TextEditingController? dateController;
+  TextEditingController? startTimeController;
+  TextEditingController? endTimeController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    titleController = TextEditingController(text: widget.task?.title);
+    noteController = TextEditingController(text: widget.task?.note);
+    dateController = TextEditingController(text: widget.task?.date);
+    startTimeController = TextEditingController(text: widget.task?.satrtTime);
+    endTimeController = TextEditingController(text: widget.task?.endTime);
+  }
+
+  @override
+  void dispose() {
+    titleController?.dispose();
+    noteController?.dispose();
+    dateController?.dispose();
+    startTimeController?.dispose();
+    endTimeController?.dispose();
+    super.dispose();
+  }
+
   String? date, startTime, endTime, remidenValue, repat, title, note;
   final List<String> remindOptions = [
     "10 minutes ",
@@ -26,7 +53,7 @@ class _AddTaskViewState extends State<AddTaskView> {
   ];
   final List<String> repatOptions = ["1 ", "2", "3", "4"];
   GlobalKey<FormState> formKey = GlobalKey();
-  TextEditingController controller = TextEditingController();
+
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   @override
   Widget build(BuildContext context) {
@@ -55,6 +82,7 @@ class _AddTaskViewState extends State<AddTaskView> {
               ),
               SizedBox(height: 15),
               CustomTextFeild(
+                controller: titleController,
                 title: 'Title',
                 hint: 'Add your Task',
                 onSaved: (value) {
@@ -63,14 +91,16 @@ class _AddTaskViewState extends State<AddTaskView> {
               ),
               SizedBox(height: 15),
               CustomTextFeild(
+                controller: noteController,
                 title: 'Note',
                 hint: 'Add your Note',
-                onSaved: (p0) {
-                  note = p0;
+                onSaved: (value) {
+                  note = value;
                 },
               ),
               SizedBox(height: 15),
               CustomTextFeild(
+                controller: dateController,
                 isRead: true,
                 title: 'Date',
                 hint: date ?? 'Add Date',
@@ -95,6 +125,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                 children: [
                   Expanded(
                     child: CustomTextFeild(
+                      controller: startTimeController,
                       isRead: true,
                       onTap: () async {
                         final TimeOfDay? pickerTime = await showTimePicker(
@@ -116,6 +147,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                   SizedBox(width: 10),
                   Expanded(
                     child: CustomTextFeild(
+                      controller: endTimeController,
                       isRead: true,
                       onTap: () async {
                         final TimeOfDay? pickerTime = await showTimePicker(
@@ -192,7 +224,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                       SizedBox(
                         height: 40,
                         width: MediaQuery.of(context).size.width * 0.4,
-                        child: ColorList(),
+                        child: ColorList(initialColor: widget.task!.color),
                       ),
                     ],
                   ),
@@ -201,31 +233,18 @@ class _AddTaskViewState extends State<AddTaskView> {
                       return CustomButtonWidget(
                         name: 'Create Task',
                         onTap: () {
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                            var id = DateTime.now().millisecondsSinceEpoch;
-                            BlocProvider.of<AddTaskCubit>(context).addTask(
-                              TaskModel(
-                                id: id,
-                                title: title!,
-                                note: note!,
-                                date: date!,
-                                satrtTime: startTime!,
-                                endTime: endTime!,
-                                color: Color.fromARGB(
-                                  255,
-                                  33,
-                                  243,
-                                  226,
-                                ).toARGB32(),
-                              ),
-                            );
-                            setState(() {
-                              autovalidateMode = AutovalidateMode.always;
-                            });
-                            BlocProvider.of<GetTaskCubit>(context).getTask();
-                            Navigator.pop(context);
-                          }
+                          widget.task!.title = titleController!.text;
+                          widget.task!.note = noteController!.text;
+                          widget.task!.date = dateController!.text;
+                          widget.task!.satrtTime = startTimeController!.text;
+                          widget.task!.endTime = endTimeController!.text;
+                          widget.task!.color = BlocProvider.of<AddTaskCubit>(
+                            context,
+                          ).color.toARGB32();
+
+                          widget.task!.save();
+                          BlocProvider.of<GetTaskCubit>(context).getTask();
+                          Navigator.pop(context);
                         },
                       );
                     },
@@ -239,77 +258,3 @@ class _AddTaskViewState extends State<AddTaskView> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// final value = showModalBottomSheet(
-//                   context: context,
-//                   builder: (context) {
-//                     return ListView(
-//                       children: [
-//                         ListTile(
-//                           title: const Text("10 دقائق قبل"),
-//                           onTap: () => Navigator.pop(context, "10 دقائق قبل"),
-//                         ),
-//                         ListTile(
-//                           title: const Text("15 دقائق قبل"),
-//                           onTap: () => Navigator.pop(context, "15 دقائق قبل"),
-//                         ),
-//                         ListTile(
-//                           title: const Text("20 دقائق قبل"),
-//                           onTap: () => Navigator.pop(context, "20 دقائق قبل"),
-//                         ),
-//                       ],
-//                     );
-//                   },
-//                 );
-//                 if (value != null) {
-//                   remidenValue = value.toString();
-//                 }
-
-
-
-
-
-
-// CustomTextFeild(
-            //   isRead: true,
-            //   title: 'Remind',
-            //   hint: remidenValue ?? 'Remind',
-            //   icon: const Icon(Icons.keyboard_arrow_down),
-            //   onTap: () async {
-            //     final RenderBox textFieldBox =
-            //         context.findRenderObject() as RenderBox;
-            //     final Offset offset = textFieldBox.localToGlobal(Offset.zero);
-            //     final selected = await showMenu<String>(
-            //       context: context,
-            //       position: RelativeRect.fromLTRB(
-            //         offset.dx,
-            //         offset.dy + textFieldBox.size.height,
-            //         offset.dx + textFieldBox.size.width,
-            //         offset.dy,
-            //       ),
-            //       items: remindOptions.map((option) {
-            //         return PopupMenuItem(value: option, child: Text(option));
-            //       }).toList(),
-            //     );
-            //     if (selected != null) {
-            //       setState(() {
-            //         remidenValue = selected;
-            //       });
-            //     }
-            //   },
-            // ),
