@@ -5,4 +5,7 @@ sealed class GetTaskState {}
 
 final class GetTaskInitial extends GetTaskState {}
 
-final class GetTaskSucce extends GetTaskState {}
+final class GetTaskSucce extends GetTaskState {
+  final List<TaskModel> tasks;
+  GetTaskSucce({required this.tasks});
+}

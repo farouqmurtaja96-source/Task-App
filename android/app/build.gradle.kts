@@ -7,10 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.task_v1"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
+
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -18,6 +20,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
+
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -28,6 +31,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -41,4 +45,12 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // لتشغيل desugaring (مطلوب للـ flutter_local_notifications >= 10)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
+    // لإصلاح مشاكل Android 12L+ مع desugaring
+    implementation("androidx.window:window:1.2.0")
 }

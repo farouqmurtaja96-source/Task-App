@@ -18,6 +18,12 @@ class TaskModel extends HiveObject {
   int color;
   @HiveField(6)
   int? id;
+  @HiveField(7)
+  bool? isCompelet;
+  @HiveField(8)
+  String? repeat;
+  @HiveField(9)
+  int? remind;
 
   TaskModel({
     required this.title,
@@ -27,5 +33,8 @@ class TaskModel extends HiveObject {
     required this.endTime,
     required this.color,
     required this.id,
+    required this.isCompelet,
+    this.repeat,
+    this.remind,
   });
 }

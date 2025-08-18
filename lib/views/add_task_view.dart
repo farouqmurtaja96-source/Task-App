@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task_v1/cubit/add_task_cubit/add_task_cubit.dart';
-import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
 import 'package:task_v1/model/task_model.dart';
 import 'package:task_v1/widget/app_bar_widget.dart';
 import 'package:task_v1/widget/color_list.dart';
@@ -24,7 +23,7 @@ class _AddTaskViewState extends State<AddTaskView> {
     "20 minutes",
     "25 minutes",
   ];
-  final List<String> repatOptions = ["1 ", "2", "3", "4"];
+  final List<String> repatOptions = ["None", "Daily", "Monthly", "Yearly"];
   GlobalKey<FormState> formKey = GlobalKey();
   TextEditingController controller = TextEditingController();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
@@ -204,6 +203,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
                             var id = DateTime.now().millisecondsSinceEpoch;
+
                             BlocProvider.of<AddTaskCubit>(context).addTask(
                               TaskModel(
                                 id: id,
@@ -218,12 +218,14 @@ class _AddTaskViewState extends State<AddTaskView> {
                                   243,
                                   226,
                                 ).toARGB32(),
+                                isCompelet: false,
+                                repeat: repat,
                               ),
                             );
                             setState(() {
                               autovalidateMode = AutovalidateMode.always;
                             });
-                            BlocProvider.of<GetTaskCubit>(context).getTask();
+
                             Navigator.pop(context);
                           }
                         },

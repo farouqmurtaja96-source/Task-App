@@ -11,7 +11,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   addTask(TaskModel task) async {
     task.color = color.toARGB32();
     try {
-      var data = await Hive.openBox<TaskModel>('tasks');
+      var data = await Hive.box<TaskModel>('tasks');
       data.add(task);
       emit(AddTaskSucces());
     } catch (e) {

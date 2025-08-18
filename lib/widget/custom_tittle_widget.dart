@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
 import 'package:task_v1/views/add_task_view.dart';
 import 'package:task_v1/widget/custom_button_widget.dart';
 
@@ -31,12 +33,10 @@ class CustomTittleWidget extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return AddTaskView();
-                },
-              ),
-            );
+              MaterialPageRoute(builder: (context) => AddTaskView()),
+            ).then((_) {
+              BlocProvider.of<GetTaskCubit>(context).getTask();
+            });
           },
         ),
       ],

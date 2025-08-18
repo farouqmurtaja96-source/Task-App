@@ -5,16 +5,17 @@ import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
 import 'package:task_v1/model/task_model.dart';
 import 'package:task_v1/views/edit_task.dart';
 import 'package:task_v1/widget/itme_widget.dart';
+import 'package:task_v1/widget/show_modal_buttom.dart';
 
 class NewTaskWidget extends StatelessWidget {
-  const NewTaskWidget({super.key});
+  const NewTaskWidget({super.key, required this.task});
+  final List<TaskModel> task;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GetTaskCubit, GetTaskState>(
       builder: (context, state) {
-        List<TaskModel> task =
-            BlocProvider.of<GetTaskCubit>(context).tasks ?? [];
+        // List<TaskModel> task = BlocProvider.of<GetTaskCubit>(context).tasks!;
         return ListView.builder(
           itemCount: task.length,
           itemBuilder: (context, index) {
@@ -66,12 +67,22 @@ class NewTaskWidget extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(task[index].color),
+                child: GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ShowModalButtom(task: task[index]);
+                      },
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Color(task[index].color),
+                    ),
+                    child: ItmeWidget(task: task[index]),
                   ),
-                  child: ItmeWidget(task: task[index]),
                 ),
               ),
             );

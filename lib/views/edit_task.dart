@@ -22,6 +22,7 @@ class _EidtTaskViewState extends State<EidtTaskView> {
   TextEditingController? dateController;
   TextEditingController? startTimeController;
   TextEditingController? endTimeController;
+  TextEditingController? repeatTimeController;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _EidtTaskViewState extends State<EidtTaskView> {
     dateController = TextEditingController(text: widget.task?.date);
     startTimeController = TextEditingController(text: widget.task?.satrtTime);
     endTimeController = TextEditingController(text: widget.task?.endTime);
+    repeatTimeController = TextEditingController(text: widget.task?.repeat);
   }
 
   @override
@@ -41,6 +43,7 @@ class _EidtTaskViewState extends State<EidtTaskView> {
     dateController?.dispose();
     startTimeController?.dispose();
     endTimeController?.dispose();
+    repeatTimeController?.dispose();
     super.dispose();
   }
 
@@ -51,7 +54,7 @@ class _EidtTaskViewState extends State<EidtTaskView> {
     "20 minutes",
     "25 minutes",
   ];
-  final List<String> repatOptions = ["1 ", "2", "3", "4"];
+  final List<String> repatOptions = ["None", "Daily", "Monthly", "Yearly"];
   GlobalKey<FormState> formKey = GlobalKey();
 
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
@@ -190,6 +193,7 @@ class _EidtTaskViewState extends State<EidtTaskView> {
               SizedBox(height: 10),
 
               CustomTextFeild(
+                controller: repeatTimeController,
                 isRead: true,
                 icon: DropdownButton(
                   underline: Container(height: 0),
@@ -200,6 +204,7 @@ class _EidtTaskViewState extends State<EidtTaskView> {
                   onChanged: (value) {
                     setState(() {
                       repat = value;
+                      repeatTimeController!.text = value.toString();
                     });
                   },
                 ),
@@ -241,7 +246,7 @@ class _EidtTaskViewState extends State<EidtTaskView> {
                           widget.task!.color = BlocProvider.of<AddTaskCubit>(
                             context,
                           ).color.toARGB32();
-
+                          widget.task!.repeat = repat;
                           widget.task!.save();
                           BlocProvider.of<GetTaskCubit>(context).getTask();
                           Navigator.pop(context);
