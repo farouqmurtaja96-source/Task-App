@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task_v1/cubit/add_task_cubit/add_task_cubit.dart';
 import 'package:task_v1/model/task_model.dart';
+import 'package:task_v1/services/notification.dart';
 import 'package:task_v1/widget/app_bar_widget.dart';
 import 'package:task_v1/widget/color_list.dart';
 import 'package:task_v1/widget/custom_button_widget.dart';
@@ -202,7 +203,8 @@ class _AddTaskViewState extends State<AddTaskView> {
                         onTap: () {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
-                            var id = DateTime.now().millisecondsSinceEpoch;
+                            var id =
+                                DateTime.now().millisecondsSinceEpoch.hashCode;
 
                             BlocProvider.of<AddTaskCubit>(context).addTask(
                               TaskModel(
@@ -225,7 +227,17 @@ class _AddTaskViewState extends State<AddTaskView> {
                             setState(() {
                               autovalidateMode = AutovalidateMode.always;
                             });
-
+                            final DateTime scheduledDate = DateFormat(
+                              "M/d/yyyy h:mm a",
+                            ).parse('$date $startTime');
+                            BlocProvider.of<AddTaskCubit>(
+                              context,
+                            ).showNotifiction(
+                              id: id,
+                              title: title!,
+                              body: note!,
+                              scheduledDate: scheduledDate,
+                            );
                             Navigator.pop(context);
                           }
                         },

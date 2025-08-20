@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
+import 'package:task_v1/services/notification.dart';
+
+import 'package:task_v1/views/notifiction_view.dart';
 import 'package:task_v1/widget/app_bar_widget.dart';
 import 'package:task_v1/widget/body_widget.dart';
 import 'package:task_v1/widget/custom_pike_day.dart';
@@ -17,8 +20,22 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     // TODO: implement initState
-    BlocProvider.of<GetTaskCubit>(context).getTask();
     super.initState();
+    BlocProvider.of<GetTaskCubit>(context).getTask();
+    listen();
+  }
+
+  void listen() {
+    LocalNotification.streamController.stream.listen((notificrionRespons) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return NotifictionView(respons: notificrionRespons.payload);
+          },
+        ),
+      );
+    });
   }
 
   DateTime selectDate = DateTime.now();
@@ -31,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             SizedBox(height: 40),
-            AppBarWidget(icon: Icons.dark_mode),
+            AppBarWidget(icon: Icons.dark_mode, onPressed: () {}),
             CustomTittleWidget(),
             SizedBox(height: 10),
             CustomPikeDay(

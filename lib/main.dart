@@ -4,9 +4,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task_v1/cubit/add_task_cubit/add_task_cubit.dart';
 import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
 import 'package:task_v1/model/task_model.dart';
+import 'package:task_v1/services/notification.dart';
 import 'package:task_v1/views/home_view.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalNotification.inti();
   await Hive.initFlutter();
   Hive.registerAdapter(TaskModelAdapter());
   await Hive.openBox<TaskModel>('tasks');
