@@ -11,51 +11,88 @@ class ShowModalButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 250,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            SizedBox(height: 50),
-            CustomButtonWidget(
-              onTap: () {
-                task.isCompelet = true;
-                task.save();
-                BlocProvider.of<GetTaskCubit>(context).getTask();
-                Navigator.pop(context);
-              },
-              name: 'Task Completed',
-              width: double.infinity,
-              color: Colors.indigo,
+    return task.isCompelet == false
+        ? Container(
+            width: double.infinity,
+            height: 250,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 50),
+                  CustomButtonWidget(
+                    onTap: () {
+                      task.isCompelet = true;
+                      task.save();
+                      BlocProvider.of<GetTaskCubit>(context).getTask();
+                      Navigator.pop(context);
+                    },
+                    name: 'Task Completed',
+                    width: double.infinity,
+                    color: Colors.indigo,
+                  ),
+                  SizedBox(height: 5),
+                  CustomButtonWidget(
+                    onTap: () {
+                      task.delete();
+                      BlocProvider.of<GetTaskCubit>(context).getTask();
+                      Navigator.pop(context);
+                    },
+                    name: 'Delete Task ',
+                    width: double.infinity,
+                    color: Colors.red,
+                  ),
+                  SizedBox(height: 35),
+                  CustomButtonWidget(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    name: 'Close',
+                    width: double.infinity,
+                    color: Colors.white,
+                    textColor: Colors.black,
+                    borderColor: Colors.black,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 5),
-            CustomButtonWidget(
-              onTap: () {
-                task.delete();
-                BlocProvider.of<GetTaskCubit>(context).getTask();
-                Navigator.pop(context);
-              },
-              name: 'Delete Task ',
-              width: double.infinity,
-              color: Colors.red,
+          )
+        : Container(
+            width: double.infinity,
+            height: 250,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 50),
+
+                  SizedBox(height: 5),
+                  CustomButtonWidget(
+                    onTap: () {
+                      task.delete();
+                      BlocProvider.of<GetTaskCubit>(context).getTask();
+                      Navigator.pop(context);
+                    },
+                    name: 'Delete Task ',
+                    width: double.infinity,
+                    color: Colors.red,
+                  ),
+                  SizedBox(height: 35),
+                  CustomButtonWidget(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    name: 'Close',
+                    width: double.infinity,
+                    color: Colors.white,
+                    textColor: Colors.black,
+                    borderColor: Colors.black,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 35),
-            CustomButtonWidget(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              name: 'Close',
-              width: double.infinity,
-              color: Colors.white,
-              textColor: Colors.black,
-              borderColor: Colors.black,
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

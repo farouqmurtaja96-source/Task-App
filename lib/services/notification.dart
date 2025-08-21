@@ -43,6 +43,7 @@ class LocalNotification {
     required String title,
     required String body,
     required DateTime scheduledDate,
+    String? payload,
   }) async {
     NotificationDetails details = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -60,6 +61,7 @@ class LocalNotification {
       title,
       body,
       tz.TZDateTime.from(scheduledDate, tz.local),
+      payload: payload,
       details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );

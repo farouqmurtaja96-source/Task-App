@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task_v1/cubit/add_task_cubit/add_task_cubit.dart';
 import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
+import 'package:task_v1/cubit/theme_cubit/them_cubit_cubit.dart';
 import 'package:task_v1/model/task_model.dart';
 import 'package:task_v1/services/notification.dart';
 import 'package:task_v1/views/home_view.dart';
@@ -25,11 +26,18 @@ class TaskApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AddTaskCubit()),
         BlocProvider(create: (context) => GetTaskCubit()),
+        BlocProvider(create: (context) => ThemCubit()),
       ],
-      child: MaterialApp(
-        theme: ThemeData.light(),
-        debugShowCheckedModeBanner: false,
-        home: HomeView(),
+      child: BlocBuilder<ThemCubit, ThemeMode>(
+        builder: (context, state) {
+          return MaterialApp(
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: state,
+            debugShowCheckedModeBanner: false,
+            home: HomeView(),
+          );
+        },
       ),
     );
   }

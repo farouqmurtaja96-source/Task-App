@@ -9,11 +9,13 @@ part 'add_task_state.dart';
 class AddTaskCubit extends Cubit<AddTaskState> {
   AddTaskCubit() : super(AddTaskInitial());
   Color color = Color.fromARGB(255, 33, 159, 243);
+
   addTask(TaskModel task) async {
     task.color = color.toARGB32();
     try {
       var data = await Hive.box<TaskModel>('tasks');
       data.add(task);
+
       emit(AddTaskSucces());
     } catch (e) {
       emit(AddTaskfailuer(errormessge: e.toString()));
@@ -25,12 +27,14 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     required String title,
     required String body,
     required DateTime scheduledDate,
+    String? payload,
   }) {
     LocalNotification.ShowNotifiction(
       id: id,
       title: title,
       body: body,
       scheduledDate: scheduledDate,
+      payload: payload,
     );
   }
 }

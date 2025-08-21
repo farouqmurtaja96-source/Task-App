@@ -237,6 +237,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                               title: title!,
                               body: note!,
                               scheduledDate: scheduledDate,
+                              payload: id.toString(),
                             );
                             Navigator.pop(context);
                           }

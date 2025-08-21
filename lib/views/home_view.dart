@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:task_v1/cubit/get_task_cubit/get_task_cubit.dart';
+import 'package:task_v1/cubit/theme_cubit/them_cubit_cubit.dart';
 import 'package:task_v1/services/notification.dart';
 
 import 'package:task_v1/views/notifiction_view.dart';
@@ -27,11 +29,12 @@ class _HomeViewState extends State<HomeView> {
 
   void listen() {
     LocalNotification.streamController.stream.listen((notificrionRespons) {
+      final payload = notificrionRespons.payload;
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) {
-            return NotifictionView(respons: notificrionRespons.payload);
+            return NotifictionView(respons: payload);
           },
         ),
       );
@@ -39,16 +42,24 @@ class _HomeViewState extends State<HomeView> {
   }
 
   DateTime selectDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
             SizedBox(height: 40),
-            AppBarWidget(icon: Icons.dark_mode, onPressed: () {}),
+            AppBarWidget(
+              icon: context.watch<ThemCubit>().state == ThemeMode.light
+                  ? Icons
+                        .dark_mode // لو الوضع الحالي Light → أيقونة Dark
+                  : Icons.light_mode,
+              onPressed: () {
+                BlocProvider.of<ThemCubit>(context).toggleTheme();
+              },
+            ),
             CustomTittleWidget(),
             SizedBox(height: 10),
             CustomPikeDay(
