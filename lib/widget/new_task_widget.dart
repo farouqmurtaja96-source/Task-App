@@ -15,7 +15,6 @@ class NewTaskWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GetTaskCubit, GetTaskState>(
       builder: (context, state) {
-        // List<TaskModel> task = BlocProvider.of<GetTaskCubit>(context).tasks!;
         return ListView.builder(
           itemCount: task.length,
           itemBuilder: (context, index) {
@@ -28,7 +27,6 @@ class NewTaskWidget extends StatelessWidget {
                   task.removeAt(index);
                   BlocProvider.of<GetTaskCubit>(context).getTask();
                 } else if (direction == DismissDirection.startToEnd) {
-                  // Handle end to start swipe if needed
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -46,7 +44,6 @@ class NewTaskWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.blue,
                   ),
-
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Icon(Icons.edit, color: Colors.white),
@@ -59,7 +56,6 @@ class NewTaskWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.red,
                   ),
-
                   alignment: Alignment.centerRight,
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Icon(Icons.delete, color: Colors.white),
@@ -68,6 +64,7 @@ class NewTaskWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: GestureDetector(
+                  key: ValueKey(task[index].id ?? index), // مهم للتمييز
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
